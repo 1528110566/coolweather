@@ -5,11 +5,13 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -29,7 +31,9 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
-    private SwipeRefreshLayout swipeRefreshLayout;
+    public DrawerLayout drawerLayout;
+    private Button navButton;
+    public SwipeRefreshLayout swipeRefresh;
     private String mWeatherId;
     private ScrollView weatherLayout;
     private TextView titleCity;
@@ -67,9 +71,11 @@ public class WeatherActivity extends AppCompatActivity {
         comfortText = findViewById(R.id.comfort_text);
         carWashText = findViewById(R.id.car_wash_text);
         sportText = findViewById(R.id.sport_text);
-        swipeRefreshLayout = findViewById(R.id.weather_refresh);
+        swipeRefresh = findViewById(R.id.weather_refresh);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navButton = findViewById(R.id.nav_button);
         //最多可以添加四种颜色，每转一圈显示一种颜色
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark, R.color.test);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark, R.color.test);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {
@@ -83,7 +89,7 @@ public class WeatherActivity extends AppCompatActivity {
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(mWeatherId);
         }
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 requestWeather(mWeatherId);
@@ -95,6 +101,12 @@ public class WeatherActivity extends AppCompatActivity {
         } else {
             loadBingPic();
         }
+        navButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     /**
@@ -110,7 +122,7 @@ public class WeatherActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
-                        swipeRefreshLayout.setRefreshing(false);
+                        swipeRefresh.setRefreshing(false);
                     }
                 });
             }
@@ -131,7 +143,7 @@ public class WeatherActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
                         }
-                        swipeRefreshLayout.setRefreshing(false);
+                        swipeRefresh.setRefreshing(false);
                     }
                 });
             }
