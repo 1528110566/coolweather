@@ -30,7 +30,7 @@ public class AutoUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateWeather();
-        updateBinPic();
+        updateBingPic();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         int anHour = 8 * 60 * 60 * 1000;//8小时的毫秒数
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
@@ -44,14 +44,14 @@ public class AutoUpdateService extends Service {
     /**
      * 更新天气信息
      */
-    private void updateBinPic() {
+    private void updateWeather() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {
             //有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
             String weatherId = weather.basic.weatherId;
-            String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weather
+            String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId
                     + "&key=a2e0c3d3faab4387be97600dcb6f4a52";
             HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
                 @Override
@@ -76,7 +76,7 @@ public class AutoUpdateService extends Service {
     /**
      * 更新必应每日一图
      */
-    private void updateWeather() {
+    private void updateBingPic() {
         String requestBingPic = "http://guolin.tech/api/bing_pic";
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
             @Override
