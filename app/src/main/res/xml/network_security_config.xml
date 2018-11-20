@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--Android 9中不支持http协议的配置修改文件-->
 <network-security-config>
     <base-config cleartextTrafficPermitted="true" />
 </network-security-config>
