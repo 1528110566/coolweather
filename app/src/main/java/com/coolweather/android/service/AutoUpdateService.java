@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.coolweather.android.gson.Weather;
 import com.coolweather.android.util.HttpUtil;
@@ -29,10 +31,11 @@ public class AutoUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Toast.makeText(this, "refresh", Toast.LENGTH_SHORT).show();
         updateWeather();
         updateBingPic();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 8 * 60 * 60 * 1000;//8小时的毫秒数
+        int anHour = 1000;//8小时的毫秒数
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AutoUpdateService.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
@@ -45,8 +48,10 @@ public class AutoUpdateService extends Service {
      * 更新天气信息
      */
     private void updateWeather() {
+        Toast.makeText(this, "refreshWeather", Toast.LENGTH_SHORT).show();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
+        Log.d("123abc", "updateWeather: "+weatherString);
         if (weatherString != null) {
             //有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
@@ -77,6 +82,7 @@ public class AutoUpdateService extends Service {
      * 更新必应每日一图
      */
     private void updateBingPic() {
+        Toast.makeText(this, "refreshBingPic", Toast.LENGTH_SHORT).show();
         String requestBingPic = "http://guolin.tech/api/bing_pic";
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
             @Override

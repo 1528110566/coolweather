@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -150,6 +151,7 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
+        Toast.makeText(this, "Weather state is up to date from server.", Toast.LENGTH_SHORT).show();
         loadBingPic();
     }
 
@@ -178,6 +180,7 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
+        Toast.makeText(this, "Daily Bing_Picture is up to date from server.", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -216,7 +219,7 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
-        Intent intent = new Intent(this, AutoUpdateService.class);
-        startService(intent);
+//        Intent intent = new Intent(this, AutoUpdateService.class);
+//        startService(intent);
     }
 }

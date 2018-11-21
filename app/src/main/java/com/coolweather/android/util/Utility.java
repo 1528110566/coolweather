@@ -71,6 +71,7 @@ public class Utility {
                     County county = new County();
                     county.setCountyName(countyObject.getString("name"));
                     county.setWeatherId(countyObject.getString("weather_id"));
+                    Log.d("123abc", "handleCountyResponse: " + countyObject.getString("weather_id"));
                     county.setCityId(cityId);
                     county.save();
                 }
@@ -86,6 +87,7 @@ public class Utility {
      * 将返回的JSON数据解析成Weather实体类
      */
     public static Weather handleWeatherResponse(String response) {
+        Log.d("123abc", "handleWeatherResponse: " + response);
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
